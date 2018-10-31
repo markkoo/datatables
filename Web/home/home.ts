@@ -7,21 +7,77 @@ import 'datatables.net-select';
 import { setupExtension } from '../../module/extensions';
 
 setupExtension();
+function htmlEntities(str: string) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
+
+interface SColumnDefsSettings<T> extends DataTables.ColumnDefsSettings {
+    searchNearest? : boolean
+    filter? : boolean
+    click?: (row: T) => void
+}
+
+interface TableConfig<T> {
+    ajaxUrl : string
+    groupBy? : (a: T, b: T) => boolean
+    columnDefs : SColumnDefsSettings<T>[]
+}
+
+function setupDataTable<T>(config : { elementId : string, config : TableConfig<T> }) {
+  
+}
+
+class Person {
+    name : string
+    age : number
+    like : string
+    code : string
+    super : string
+    lala : string
+}
+
+setupDataTable<Person>({
+    elementId: 'asd',
+    config: {
+        ajaxUrl: '',
+        groupBy: (a, b) => a.name == b.name,
+        columnDefs : [{ targets : [0], searchable : true, filter : true, click : (row) => { row.name; } }]
+    }
+});
+
+
+
+
+
+
+let config = {
+    url: '/data.json',
+    groupBy: (a: any, b: any) => a['name'] === b['name'],
+    columnDefs: [
+        {
+            searchkajing : true,
+            filterable : true,
+            click : (row : any)=>{
+                // popup()
+            }
+        }
+    ]
+}
 
 const keys = ['name', 'age', 'like', 'code', 'super', 'lala'];
 let $table = $('#example').DataTable({
     ajax: ({
         url: '/data.json',
         dataSrc: function (data: { data: string[][] }) {
-            const datas = data.data;            
+            const datas = data.data;
             const result = datas.map((array) => {
-                let item: { [name: string ]: any } = {};
+                let item: { [name: string]: any } = {};
                 array.forEach((value, index) => {
                     item[keys[index]] = value;
                 });
                 return item;
-            }).groupBy((a, b) => a['name'] === b['name'] );
+            }).groupBy((a, b) => a['name'] === b['name']);
             return result;
         }
     }),
@@ -30,7 +86,16 @@ let $table = $('#example').DataTable({
             title: 'name',
             targets: [0],
             render: function (data: any, type: any, row: any, meta: any): any {
-                return `<a href='${row[0]['name']}'>${row[0]['name']}</a>`
+                if (row.length > 1) {
+                    return `<button class="click" data-value="${htmlEntities(JSON.stringify(row[0]))}" >click 1</button>
+                            <br>
+                            <button class="click" data-value="${ htmlEntities(JSON.stringify(row[1]))}" >click 2</button>
+                        `;
+                }
+                else {
+                    return `<button>only 1</button>`;
+                }
+                return '';
             }
         },
         {
@@ -46,7 +111,7 @@ let $table = $('#example').DataTable({
             render: function (data: any, type: any, row: any, meta: any): any {
                 return row[0]['like']
             },
-            orderable : false
+            orderable: false
         },
         {
             title: 'code',
@@ -61,7 +126,7 @@ let $table = $('#example').DataTable({
             render: function (data: any, type: any, row: any, meta: any): any {
                 return row[0]['super']
             },
-            orderable : false
+            orderable: false
         },
         {
             title: 'lala',
@@ -79,31 +144,32 @@ let $table = $('#example').DataTable({
         }
     ],
     initComplete: function (settings, json) {
-       
+        // search 
+        // filter
 
-        ['super','like'].forEach(key => {
+        ['super', 'like'].forEach(key => {
 
             const thisColumnInput = document.createElement('input');
             thisColumnInput.type = 'text';
             thisColumnInput.addEventListener('input', e => {
-                console.log(thisColumnInput.value); 
-            }); 
-            thisColumnInput.addEventListener('focus', e => {      
-                document.querySelectorAll<HTMLInputElement>('#example th input').forEach(input => { 
-                    if(input !== thisColumnInput) input.value = '';
+                console.log(thisColumnInput.value);
+            });
+            thisColumnInput.addEventListener('focus', e => {
+                document.querySelectorAll<HTMLInputElement>('#example th input').forEach(input => {
+                    if (input !== thisColumnInput) input.value = '';
                 });
                 $table.column(keys.indexOf(key)).order('asc').draw();
             });
-            document.querySelector(`#example th:nth-of-type(${ keys.indexOf(key) + 1 })`).appendChild(thisColumnInput);
+            document.querySelector(`#example th:nth-of-type(${keys.indexOf(key) + 1})`).appendChild(thisColumnInput);
 
         });
-        
+
 
 
     }
 });
 
-document.getElementById('example').addEventListener('click', (e) => {
+document.getElementById('example').addEventListener('click', e => {
     const element = e.target as HTMLElement;
     if (element.classList.contains('enquiryButton')) {
         let parent = element.parentElement;
@@ -116,6 +182,10 @@ document.getElementById('example').addEventListener('click', (e) => {
                 parent = parent.parentElement
             }
         }
+    }
+    else if (element.classList.contains('click')) {
+        console.log(element.dataset['value']);
+        console.log(JSON.parse(element.dataset['value']));
     }
 
 });
