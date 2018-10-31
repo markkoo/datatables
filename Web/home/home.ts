@@ -88,8 +88,8 @@ let $table = $('#example').DataTable({
             thisColumnInput.addEventListener('input', e => {
                 console.log(thisColumnInput.value); 
             }); 
-            thisColumnInput.addEventListener('focus', e => {     
-                document.querySelectorAll<HTMLInputElement>('#example th input').forEach(input => {
+            thisColumnInput.addEventListener('focus', e => {      
+                document.querySelectorAll<HTMLInputElement>('#example th input').forEach(input => { 
                     if(input !== thisColumnInput) input.value = '';
                 });
                 $table.column(keys.indexOf(key)).order('asc').draw();
