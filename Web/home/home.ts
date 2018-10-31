@@ -89,11 +89,10 @@ let $table = $('#example').DataTable({
                 console.log(thisColumnInput.value); 
             }); 
             thisColumnInput.addEventListener('focus', e => {     
-                let ggc = document.querySelectorAll<HTMLInputElement>('#example th input');
-                console.log(ggc);
+                document.querySelectorAll<HTMLInputElement>('#example th input');
                 document.querySelectorAll<HTMLInputElement>('#example th input').forEach(input => {
                     
-                    if(input !== thisColumnInput) input.value == '';
+                    if(input !== thisColumnInput) input.value = '';
                 });
                 $table.column(keys.indexOf(key)).order('asc').draw();
             });
