@@ -12,7 +12,14 @@ let $table = $('#example').DataTable({
     ajax: ({
         url: '/data.json',
         dataSrc: function (data: { data: string[][] }) {
-            return data.data.groupBy((a, b) => a[0] === b[0] && a[1] === b[1]);
+            const key = ['name', 'age', 'like', 'code', 'super'];
+            data.data.map(arr => arr.map((v, i) => {
+                let item: { [name: string]: any } = {};
+                item[key[i]] = v;
+                return item;
+            }));
+            
+            return data.data.groupBy((a, b) => a[0] === b[0]);
         }
     }),
     columnDefs: [
@@ -75,22 +82,17 @@ let $table = $('#example').DataTable({
 document.getElementById('example').addEventListener('click', (e) => {
     const element = e.target as HTMLElement;
     if (element.classList.contains('enquiryButton')) {
-        console.log('done');
         let parent = element.parentElement;
         while (parent != null) {
-            console.log(parent.tagName);
             if (parent.tagName === 'TR') {
-                
-                console.log($table.rows(parent).data());          
+                console.log($table.rows(parent).data()[0]);
                 break;
             }
             else {
                 parent = parent.parentElement
-            } 
-        } 
+            }
+        }
     }
-
-   
 
 });
 
