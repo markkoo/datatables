@@ -21,7 +21,8 @@ interface SColumnDefsSettings<T> extends DataTables.ColumnDefsSettings {
 interface TableConfig<T> {
     ajaxUrl : string
     groupBy? : (a: T, b: T) => boolean
-    columnDefs : SColumnDefsSettings<T>[]
+    columnDefs : SColumnDefsSettings<T>[],
+    objectForStructure : T
 }
 
 function setupDataTable<T>(config : { elementId : string, config : TableConfig<T> }) {
@@ -29,28 +30,29 @@ function setupDataTable<T>(config : { elementId : string, config : TableConfig<T
     $(document.getElementById(config.elementId)).DataTable({
         ajax: ({
             url: tableConfig.ajaxUrl,
-            dataSrc: function (data: { data: string[][] }) {
-                const datas = data.data;
-                const result = datas.map((array) => {
-                    let item: { [name: string]: T } = {};
+            dataSrc: function (data: { data: any[][] }) {
+                const datas = data.data;                
+                const datasAfterMap = datas.map<T>((array) => {
+                    let item: any = {};
+                    const keys =  Object.keys(tableConfig.objectForStructure);
                     array.forEach((value, index) => {
                         item[keys[index]] = value;
                     });
                     return item;
-                }).groupBy((a, b) => a['name'] === b['name']);
-                return result;
+                });
+                return (tableConfig.groupBy) ? datasAfterMap.groupBy(tableConfig.groupBy) : datasAfterMap;
             }
         }),
     })
 }
 
 class Person {
-    name : string
-    age : number
-    like : string
-    code : string
-    super : string
-    lala : string
+    name : string = undefined;
+    age : number = undefined;
+    like : string = undefined;
+    code : string = undefined;
+    super : string = undefined;
+    lala : string = undefined;
 }
 
 setupDataTable<Person>({
@@ -58,8 +60,9 @@ setupDataTable<Person>({
     config: {
         ajaxUrl: '',
         groupBy: (a, b) => a.name == b.name,
-        columnDefs : [{ targets : [0], searchable : true, filter : true, click : (row) => { row.name; } }]
-    }
+        columnDefs : [{ targets : [0], searchable : true, filter : true, click : (row) => { row.name; } }],
+        objectForStructure : new Person()
+    }    
 });
 
 
