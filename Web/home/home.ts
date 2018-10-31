@@ -25,7 +25,23 @@ interface TableConfig<T> {
 }
 
 function setupDataTable<T>(config : { elementId : string, config : TableConfig<T> }) {
-  
+    const tableConfig = config.config;
+    $(document.getElementById(config.elementId)).DataTable({
+        ajax: ({
+            url: tableConfig.ajaxUrl,
+            dataSrc: function (data: { data: string[][] }) {
+                const datas = data.data;
+                const result = datas.map((array) => {
+                    let item: { [name: string]: T } = {};
+                    array.forEach((value, index) => {
+                        item[keys[index]] = value;
+                    });
+                    return item;
+                }).groupBy((a, b) => a['name'] === b['name']);
+                return result;
+            }
+        }),
+    })
 }
 
 class Person {
