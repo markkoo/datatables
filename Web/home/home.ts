@@ -78,7 +78,9 @@ document.getElementById('example').addEventListener('click', (e) => {
         console.log('done');
         let parent = element.parentElement;
         while (parent != null) {
-            if (parent.tagName === 'tr') {
+            console.log(parent.tagName);
+            if (parent.tagName === 'TR') {
+                
                 console.log($table.rows(parent).data());          
                 break;
             }
