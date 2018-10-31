@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+        content="ie=edge">
+    <title>Document</title>
+    <% for (var css in htmlWebpackPlugin.files.css) { 
+        if(htmlWebpackPlugin.files.css[css].indexOf(htmlWebpackPlugin.options.sName) !== -1){
+        %>
+    <link href="<%= htmlWebpackPlugin.files.css[css] %>"
+        rel="stylesheet">
+    <% }  }%>
+
+
+</head>
+
+<body>
+
+        <button id="slideDown">slide down</button>
+        <button id="slideUp">slide up</button>
+        <button id="slideToggle">slide toggle</button>
+    
+        <div id="box">
+            <div style="height:300px"></div>
+        </div>
+    <!-- <form id="enquiryForm"
+        action="/submit">
+
+        <input type="submit" value="Submit">
+
+        <input type="submit" value="Go Elsewhere" formaction="/elsewhere">
+
+    </form>
+
+
+
+        <div style="position:fixed">asd</div>
+        <div id="scrollToTop"
+            class=""
+            style="position:fixed">scrollToTop</div>
+        <div id="pcNav"
+            class="">
+            a<br/>b<br/>c<br/>d<br/>
+        </div>
+            <div id="mobileNav"
+                class="">
+            </div>
+
+
+
+
+            <input type="tel" id="phone">
+            <div id="fb-root"></div>
+            <div class="fb-page"
+                data-href="https://www.facebook.com/KidsPlanetEnglish/"
+                data-small-header="false"
+                data-adapt-container-width="true"
+                data-hide-cover="false"
+                data-show-facepile="true">
+            </div>
+
+            <div id="home"
+                style="width : 500px;height : 500px; ">da</div>
+            <div id="googleMap"
+                style="width:300px; height:300px;"></div>
+            <div class="addthis_inline_share_toolbox_3xz5"></div>
+
+            <form id="enquiryForm"
+                action="http://192.168.1.152:61547/api/debug/sendEmail"
+                enctype="multipart/form-data"
+                method="post">
+                <input type="text" name="name" required value="da" >
+                <input type="text" name="hp" required value="asd" >
+                <input type="email" name="email" required value="de@hotmail.com">
+                <input type="subject" name="subject" required value="sub" >
+                <textarea name="message" required value="asdwdsa" >asdwdsa</textarea>
+                <input type="file" name="files" multiple />
+                <button type="submit">
+            <span>Send</span>
+            <span>Sending</span>
+            <span>Successfull!</span>
+            <span>Fail!</span>
+        </button>
+            </form> -->
+            <a href="<%= require('../images/big.jpg') %>" data-fancybox style="display: none">
+        <img src="<%= require('../images/big.jpg') %>" />
+    </a>
+            <!--     
+    <div id="home"></div>
+    
+    <table id="table">
+        <thead>
+            <tr>
+                <th>Column 1</th>
+                <th>Column 2</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 11 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 1 Data 1</td>
+                <td>Row 1 Data 2</td>
+            </tr>
+            <tr>
+                <td>Row 2 Data 1</td>
+                <td>Row 2 Data 2</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div id="masonry">
+        <div class="masonry-item">
+            <img src="<%= require('../images/big.jpg') %>" width="200"/>
+        </div>
+        <div class="masonry-item">
+            <img src="<%= require('../images/big.jpg') %>" width="200"/>
+        </div>
+    </div>
+    
+    
+    <a href="<%= require('../images/big.jpg') %>" data-fancybox>
+        <img src="<%= require('../images/big.jpg') %>" />
+    </a>
+    
+    <div id="owl-carousel" class="owl-carousel owl-theme">
+        <div class="wrap" data-dot="<%= require('../images/big.jpg') %>">
+            <img src="<%= require('../images/big.jpg') %>"
+                    alt="hydro o-ring and oil seal">
+        </div>
+        <div class="wrap" data-dot="<%= require('../images/big.jpg') %>">
+            <img src="<%= require('../images/big.jpg') %>"
+                    alt="hydro o-ring and oil seal">
+        </div>
+    </div> -->
+
+
+            <!--[if le IE 11]> 
+        <% for(let chunk of Object.keys(htmlWebpackPlugin.files.chunks).filter(c => c.indexOf('polyfills') !== -1) ) {
+        if(htmlWebpackPlugin.files.chunks[chunk].entry.indexOf('runtime~') !== -1) {         
+            %>
+    <script>
+        <%= compilation.assets[htmlWebpackPlugin.files.chunks[chunk].entry.split('/').pop()].source() %>
+    </script>
+    <% 
+       } 
+       else {
+          %>
+            <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+    <% 
+       }
+    } 
+    %> 
+    <![endif]-->
+            <% for (var chunk in htmlWebpackPlugin.files.chunks) { 
+        if(chunk.indexOf(htmlWebpackPlugin.options.sName) !== -1) { 
+            if(htmlWebpackPlugin.files.chunks[chunk].entry.indexOf('runtime~') !== -1) {         
+                 %>
+            <script>
+                <%= compilation.assets[htmlWebpackPlugin.files.chunks[chunk].entry.split('/').pop()].source() %>
+            </script>
+            <% 
+            } 
+            else {
+               %>
+            <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+            <% 
+            }
+        }
+    } 
+    %>
+
+
+
+</body>
+
+</html>

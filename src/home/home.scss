@@ -1,0 +1,20 @@
+@import '../shared/test/test.scss';
+
+#home{
+    background-color: red;
+    background-image: url('../images/big.jpg');
+    // background-image: url('../images/big.jpg')
+}
+
+
+
+
+body{
+    font-family: 'Montserrat'
+}
+
+#box{
+    background: red;
+    width:300px;
+    display: none;
+}
