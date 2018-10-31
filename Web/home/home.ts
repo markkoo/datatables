@@ -12,10 +12,11 @@ function htmlEntities(str: string) {
 }
 
 
-interface SColumnDefsSettings<T> extends DataTables.ColumnDefsSettings {
+interface SColumnDefsSettings<T> {
     searchNearest? : boolean
     filter? : boolean
     click?: (row: T) => void
+    originalColumnDef : DataTables.ColumnDefsSettings
 }
 
 interface TableConfig<T> {
@@ -27,6 +28,16 @@ interface TableConfig<T> {
 
 function setupDataTable<T>(config : { elementId : string, config : TableConfig<T> }) {
     const tableConfig = config.config;
+    let searchNearestIndexes : number[] = [];
+    let filterIndexes : number[] = [];
+    let clickMethodVsIndex : {[name : number] : (row: T) => void };
+
+    tableConfig.columnDefs.forEach(columnDef=>{
+        if(columnDef.sea){
+
+        }
+    })
+
     $(document.getElementById(config.elementId)).DataTable({
         ajax: ({
             url: tableConfig.ajaxUrl,
@@ -43,6 +54,7 @@ function setupDataTable<T>(config : { elementId : string, config : TableConfig<T
                 return (tableConfig.groupBy) ? datasAfterMap.groupBy(tableConfig.groupBy) : datasAfterMap;
             }
         }),
+        columnDefs: tableConfig.columnDefs.map(columnDef => columnDef.originalColumnDef)
     })
 }
 
@@ -190,6 +202,7 @@ let $table = $('#example').DataTable({
 
 document.getElementById('example').addEventListener('click', e => {
     const element = e.target as HTMLElement;
+    console.log($table.cell( element ).index().columnVisible);
     if (element.classList.contains('enquiryButton')) {
         let parent = element.parentElement;
         while (parent != null) {
