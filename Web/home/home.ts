@@ -44,11 +44,33 @@ function setupDataTable<T>(config: { elementId: string, config: TableConfig<T> }
                 return (tableConfig.groupBy) ? datasAfterMap.groupBy(tableConfig.groupBy) : datasAfterMap;
             }
         }),
-        columnDefs: tableConfig.columnDefs.map(columnDef => columnDef.originalColumnDef)
+        columnDefs: tableConfig.columnDefs.map(columnDef => columnDef.originalColumnDef),
+        initComplete: function (settings, json) {
+
+            const searchNearestIndexes = tableConfig.columnDefs.filter(c => c.searchNearest).map(c => (c.originalColumnDef.targets as [number])[0]);
+            const filterIndexes = tableConfig.columnDefs.filter(c => c.filter).map(c => (c.originalColumnDef.targets as [number])[0]);
+    
+            
+            ['super', 'like'].forEach(key => {
+    
+                const thisColumnInput = document.createElement('input');
+                thisColumnInput.type = 'text';
+                thisColumnInput.addEventListener('input', e => {
+                    console.log(thisColumnInput.value);
+                });
+                thisColumnInput.addEventListener('focus', e => {
+                    document.querySelectorAll<HTMLInputElement>('#example th input').forEach(input => {
+                        if (input !== thisColumnInput) input.value = '';
+                    });
+                    $table.column(keys.indexOf(key)).order('asc').draw();
+                });
+                document.querySelector(`#example th:nth-of-type(${keys.indexOf(key) + 1})`).appendChild(thisColumnInput);
+    
+            });
+        }
     });
 
-    const searchNearestIndexes = tableConfig.columnDefs.filter(c => c.searchNearest).map(c => (c.originalColumnDef.targets as [number])[0]);
-    const filterIndexes = tableConfig.columnDefs.filter(c => c.filter).map(c => (c.originalColumnDef.targets as [number])[0]);
+   
     const clickMethodVsIndex = tableConfig.columnDefs.filter(c => c.click).reduce<{ [name: number]: (row: T) => void }>((result, columnDef) => {
         result[(columnDef.originalColumnDef.targets as [number])[0]] = columnDef.click;
         return result;
