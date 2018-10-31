@@ -12,61 +12,63 @@ let $table = $('#example').DataTable({
     ajax: ({
         url: '/data.json',
         dataSrc: function (data: { data: string[][] }) {
-            const key = ['name', 'age', 'like', 'code', 'super'];
-            data.data.map(arr => arr.map((v, i) => {
-                let item: { [name: string]: any } = {};
-                item[key[i]] = v;
+            // [['a','b'], []]
+            // [{  }]
+
+            const datas = data.data;
+            const keys = ['name', 'age', 'like', 'code', 'super', 'lala'];
+            return datas.map((array, index) => {
+                let item: { [name: string ]: any } = {};
+                item[keys[index]] = array[index];
                 return item;
-            }));
-            
-            return data.data.groupBy((a, b) => a[0] === b[0]);
+            }).groupBy((a, b) => a['name'] === b['name'] );
         }
     }),
     columnDefs: [
         {
-            title: "link",
+            title: 'name',
             targets: [0],
             render: function (data: any, type: any, row: any, meta: any): any {
-                return `<a href="${row[0][0]}">${row[0][0]}</a>`
+                return `<a href='${row[0]['name']}'>${row[0]['name']}</a>`
             }
         },
         {
-            title: "b",
+            title: 'age',
             targets: [1],
             render: function (data: any, type: any, row: any, meta: any): any {
-                return row[0][1]
+                return row[0]['age']
             }
         },
         {
-            title: "c",
+            title: 'like',
             targets: [2],
             render: function (data: any, type: any, row: any, meta: any): any {
-                return row[0][2]
+                return row[0]['like']
             }
         },
         {
-            title: "d",
+            title: 'code',
             targets: [3],
             render: function (data: any, type: any, row: any, meta: any): any {
-                return row[0][3]
+                return row[0]['code']
             }
         },
         {
-            title: "e",
+            title: 'super',
             targets: [4],
             render: function (data: any, type: any, row: any, meta: any): any {
-                return row[0][4]
+                return row[0]['super']
             }
         },
         {
-            title: "f",
+            title: 'lala',
             targets: [5],
             render: function (data: any, type: any, row: any, meta: any): any {
-                return row[0][5]
+                return row[0]['lala']
             }
         },
         {
-            title: "button",
+            title: 'button',
             targets: [6],
             render: function (data: any, type: any, row: any, meta: any): any {
                 return '<button class="enquiryButton">Enquiry</button>'
