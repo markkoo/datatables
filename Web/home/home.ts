@@ -13,39 +13,29 @@ function htmlEntities(str: string) {
 
 
 interface SColumnDefsSettings<T> {
-    searchNearest? : boolean
-    filter? : boolean
+    searchNearest?: boolean
+    filter?: boolean
     click?: (row: T) => void
-    originalColumnDef : DataTables.ColumnDefsSettings
+    originalColumnDef: DataTables.ColumnDefsSettings
 }
 
 interface TableConfig<T> {
-    ajaxUrl : string
-    groupBy? : (a: T, b: T) => boolean
-    columnDefs : SColumnDefsSettings<T>[],
-    objectForStructure : T
+    ajaxUrl: string
+    groupBy?: (a: T, b: T) => boolean
+    columnDefs: SColumnDefsSettings<T>[],
+    objectForStructure: T
 }
 
-function setupDataTable<T>(config : { elementId : string, config : TableConfig<T> }) {
+function setupDataTable<T>(config: { elementId: string, config: TableConfig<T> }) {
     const tableConfig = config.config;
-    let searchNearestIndexes : number[] = [];
-    let filterIndexes : number[] = [];
-    let clickMethodVsIndex : {[name : number] : (row: T) => void };
-
-    tableConfig.columnDefs.forEach(columnDef=>{
-        if(columnDef.sea){
-
-        }
-    })
-
     $(document.getElementById(config.elementId)).DataTable({
         ajax: ({
             url: tableConfig.ajaxUrl,
             dataSrc: function (data: { data: any[][] }) {
-                const datas = data.data;                
+                const datas = data.data;
                 const datasAfterMap = datas.map<T>((array) => {
                     let item: any = {};
-                    const keys =  Object.keys(tableConfig.objectForStructure);
+                    const keys = Object.keys(tableConfig.objectForStructure);
                     array.forEach((value, index) => {
                         item[keys[index]] = value;
                     });
@@ -55,16 +45,29 @@ function setupDataTable<T>(config : { elementId : string, config : TableConfig<T
             }
         }),
         columnDefs: tableConfig.columnDefs.map(columnDef => columnDef.originalColumnDef)
-    })
+    });
+
+    const searchNearestIndexes = tableConfig.columnDefs.filter(c => c.searchNearest).map(c => (c.originalColumnDef.targets as [number])[0]);
+    const filterIndexes = tableConfig.columnDefs.filter(c => c.filter).map(c => (c.originalColumnDef.targets as [number])[0]);
+    const clickMethodVsIndex = tableConfig.columnDefs.filter(c => c.click).reduce<{ [name: number]: (row: T) => void }>((result, columnDef) => {
+        result[(columnDef.originalColumnDef.targets as [number])[0]] = columnDef.click;
+        return result;
+    }, {});
+
+
+
+
+
+
 }
 
 class Person {
-    name : string = undefined;
-    age : number = undefined;
-    like : string = undefined;
-    code : string = undefined;
-    super : string = undefined;
-    lala : string = undefined;
+    name: string = undefined;
+    age: number = undefined;
+    like: string = undefined;
+    code: string = undefined;
+    super: string = undefined;
+    lala: string = undefined;
 }
 
 setupDataTable<Person>({
@@ -72,9 +75,9 @@ setupDataTable<Person>({
     config: {
         ajaxUrl: '',
         groupBy: (a, b) => a.name == b.name,
-        columnDefs : [{ targets : [0], searchable : true, filter : true, click : (row) => { row.name; } }],
-        objectForStructure : new Person()
-    }    
+        columnDefs: [{ searchNearest: true, filter: true, click: (row) => { row.name; }, originalColumnDef: { targets: [0] } }],
+        objectForStructure: new Person()
+    }
 });
 
 
@@ -87,9 +90,9 @@ let config = {
     groupBy: (a: any, b: any) => a['name'] === b['name'],
     columnDefs: [
         {
-            searchkajing : true,
-            filterable : true,
-            click : (row : any)=>{
+            searchkajing: true,
+            filterable: true,
+            click: (row: any) => {
                 // popup()
             }
         }
@@ -202,7 +205,7 @@ let $table = $('#example').DataTable({
 
 document.getElementById('example').addEventListener('click', e => {
     const element = e.target as HTMLElement;
-    console.log($table.cell( element ).index().columnVisible);
+    console.log($table.cell(element).index().columnVisible);
     if (element.classList.contains('enquiryButton')) {
         let parent = element.parentElement;
         while (parent != null) {
