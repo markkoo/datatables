@@ -12,16 +12,16 @@ let $table = $('#example').DataTable({
     ajax: ({
         url: '/data.json',
         dataSrc: function (data: { data: string[][] }) {
-            // [['a','b'], []]
-            // [{  }]
-
             const datas = data.data;
             const keys = ['name', 'age', 'like', 'code', 'super', 'lala'];
-            return datas.map((array, index) => {
+            const result = datas.map((array, index) => {
                 let item: { [name: string ]: any } = {};
-                item[keys[index]] = array[index];
+                array.forEach(value => {
+                    item[keys[index]] = value;
+                })
                 return item;
             }).groupBy((a, b) => a['name'] === b['name'] );
+            return result;
         }
     }),
     columnDefs: [
