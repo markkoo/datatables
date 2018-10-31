@@ -44,7 +44,6 @@ export function setupDataTable<T>(config: { elementId: string, config: TableConf
                     return (tableConfig.groupBy) ? datasAfterMap.groupBy(tableConfig.groupBy) : datasAfterMap;
                 },
                 success : function(){
-                    console.log(9)
                     const searchNearestIndexes = tableConfig.columnDefs.filter(c => c.searchNearest).map(c => (c.originalColumnDef.targets as [number])[0]);
                     const filterIndexes = tableConfig.columnDefs.filter(c => c.filter).map(c => (c.originalColumnDef.targets as [number])[0]);
                     const createInput = (indexes : number[], type : 'searchNearest' | 'filter') : void => {
