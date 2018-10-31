@@ -8,7 +8,7 @@ import { setupExtension } from '../../module/extensions';
 
 setupExtension();
 
-let table = $('#example').DataTable({
+let $table = $('#example').DataTable({
     ajax: ({
         url: '/data.json',
         dataSrc: function (data: { data: string[][] }) {
@@ -67,14 +67,30 @@ let table = $('#example').DataTable({
         }
 
     ],
-    initComplete: function(settings, json) {
+    initComplete: function (settings, json) {
         //        
     }
 });
 
-document.getElementById('#example').addEventListener('click',(e)=>{
-    (e.target as HTMLElement)
-})
+document.getElementById('example').addEventListener('click', (e) => {
+    const element = e.target as HTMLElement;
+    if (element.classList.contains('enquiryButton')) {
+        console.log('done');
+        let parent = element.parentElement;
+        while (parent != null) {
+            if (parent.tagName === 'tr') {
+                console.log($table.rows(parent).data());          
+                break;
+            }
+            else {
+                parent = parent.parentElement
+            } 
+        } 
+    }
+
+   
+
+});
 
 
 
