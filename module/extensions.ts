@@ -5,13 +5,13 @@ declare global {
     } 
     interface String {
         padStart(maxLength: number, fillString: string): string;
-        padEnd(maxLength: number, fillString: string): string;       
+        padEnd(maxLength: number, fillString: string): string;   
+        encodeHtml(): string;    
     }
     interface Array<T> {
         groupBy(compareWith?: CompareWith<T>): T[][];
     }
 }
-
 
 type CompareWith<T = any> = (a: T, b: T) => boolean;
 
@@ -74,6 +74,10 @@ export function setupExtension() {
         return S + truncatedStringFiller;
     };
 
+    String.prototype.encodeHtml = function encodeHtml() {
+        const value = this as string;
+        return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
 
     Date.prototype.toDateString = function () {
         const date = this as Date;
