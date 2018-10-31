@@ -1,64 +1,77 @@
-const path = require('path');
+const pathHelper = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin'); // create index.html
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin'); // split out css 
 const webpack = require('webpack');
 //  const InlineSourcePlugin = require('html-webpack-inline-source-plugin');
 
+const entryPaths = [
+    'Web/Home/home.ts'
+];
+
+const componentPaths = [
+];
+
+function changePathLastSegment(path, splitSymbol, to) {
+    let segments = path.split(splitSymbol);
+    segments.pop();
+    segments.push(to);
+    return segments.join(splitSymbol);
+}
+
+const entry = entryPaths.reduce((result, path, index) => {
+    result[index.toString()] = pathHelper.resolve(__dirname, path);
+    return result;
+}, {});
+
+const entryHtmlWebpacks = entryPaths.map((path, index) => {
+    
+    return new HtmlWebpackPlugin({
+        template: pathHelper.resolve(__dirname, changePathLastSegment(path, '.', 'html')),
+        inject: false,
+        filename: pathHelper.resolve(__dirname, changePathLastSegment(path, '/', 'Index.html')),
+        sName: index.toString()
+    });
+});
+
+const compoentHtmlWebpacks = componentPaths.map(path => {
+    return new HtmlWebpackPlugin({
+        template: pathHelper.resolve(__dirname, path),
+        inject: false,
+        filename: pathHelper.resolve(__dirname, changePathLastSegment(path, '/', 'Default.cshtml'))
+    });
+});
+
+const allHtmlWebpacks = entryHtmlWebpacks.concat(compoentHtmlWebpacks);
+// allHtmlWebpacks.push(new HtmlWebpackPlugin({
+//     template: pathHelper.resolve(__dirname, 'Web/Shared/layout.cshtml'),
+//     inject: false,
+//     filename: pathHelper.resolve(__dirname, 'Web/Shared/Index.cshtml')
+// }));
+
+
 module.exports = {
-    entry: {
-        home: './src/home/home.ts',
-        // about: './src/about/about.ts',
-        // contact: './src/contact/contact.ts',
-        //  service: './src/service/service.ts',
-        //  app: './src/index.ts',
-        // polyfills: './src/polyfills.ts'
-    },
-    plugins: [
-        new CleanWebpackPlugin(['dist']),
-        new HtmlWebpackPlugin({
-            template: './src/home/template.html',
-            inject: false,
-            filename: path.resolve(__dirname, 'src/home/index.html'),
-            sName: 'home'
-        }),
-        //  new HtmlWebpackPlugin({
-        //      template: './src/about/template.html',
-        //      inject: false,
-        //      filename: path.resolve(__dirname, 'src/about/index.html'),
-        //      sName: 'about'
-        //  }),
-        //  new HtmlWebpackPlugin({
-        //      template: './src/contact/template.html',
-        //      inject: false,
-        //      filename: path.resolve(__dirname, 'src/contact/index.html'),
-        //      sName: 'contact'
-        //  }),
-        // new InlineSourcePlugin(),
-        // new HtmlWebpackPlugin({
-        //     template: './src/service/template.html',
-        //     inject: false,
-        //     chunks: ['service'],
-        //     filename: path.resolve(__dirname, 'src/service/index.html')
-        // }),
+    entry: entry,
+    plugins: allHtmlWebpacks.concat([
+        new CleanWebpackPlugin(['assets']),
         new MiniCssExtractPlugin({
-            filename: '[name][contenthash].css',
-            chunkFilename: '[name][contenthash].css'
+            filename: '[name].[contenthash].css',
+            chunkFilename: '[name].[contenthash].css'
         }),
         new webpack.ProvidePlugin({
-           jQuery: 'jquery',
-           'window.jQuery': 'jquery'            
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery'
         })
-    ],
+    ]),
     output: {
-        publicPath: '/dist',
+        publicPath: '/assets',
         // publicPath: '/',
         filename: '[name].[chunkhash].bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: pathHelper.resolve(__dirname, 'assets')
     },
     // vendor
     optimization: {
-        //runtimeChunk: true,
+        runtimeChunk: true,
         splitChunks: {
             chunks(chunk) {
                 return chunk.name !== 'polyfills' && chunk.name !== 'landingPage';
@@ -100,12 +113,7 @@ module.exports = {
                     options: {
                         sourceMap: true
                     }
-                },{
-                    loader: 'resolve-url-loader',
-                    options: {
-                        absolute: true
-                    }
-                  }]
+                }]
             },
             {
                 test: /\.scss$/,
@@ -116,12 +124,12 @@ module.exports = {
                     options: {
                         sourceMap: true
                     }
-                },{
+                }, {
                     loader: 'resolve-url-loader',
                     options: {
                         sourceMap: true
                     }
-                  }, {
+                }, {
                     loader: 'sass-loader',
                     options: {
                         sourceMap: true
@@ -129,25 +137,24 @@ module.exports = {
                 }]
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
+                test: /\.(png|jpg|gif)$/,
                 use: [{
                     loader: 'url-loader', // base64
                     options: {
                         limit: 8192,
                         fallback: 'file-loader',
-                        //outputPath: '/',
-                        outputPath: 'images/',
-                        publicPath: '/dist/images/'
+                        outputPath: '/',
+                        publicPath: '/assets/'
                     }
                 }]
             },
             {
-                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                test: /\.(woff|woff2|eot|ttf|otf|svg|webmanifest)$/,
                 use: [{
-                    loader: 'file-loader', 
+                    loader: 'file-loader',
                     options: {
                         //outputPath: '/',
-                        publicPath: '/dist/'
+                        publicPath: '/assets/'
                     }
                 }]
             }
