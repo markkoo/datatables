@@ -30,49 +30,52 @@ export function setupDataTable<T>(config: { elementId: string, config: TableConf
     const tableElement = document.getElementById(config.elementId);
     tableElement.classList.add(config.elementId);
     const $table = $(tableElement).on('init.dt', function () {
-        const searchNearestIndexes = tableConfig.columnDefs.filter(c => c.searchNearest).map(c => (c.originalColumnDef.targets as [number])[0]);
-        const filterIndexes = tableConfig.columnDefs.filter(c => c.filter).map(c => (c.originalColumnDef.targets as [number])[0]);
-        const createInput = (indexes: number[], type: 'searchNearest' | 'filter'): void => {
-            indexes.forEach(columnIndex => {
-                const thisColumnInput = document.createElement('input');
-                thisColumnInput.type = 'text';
-                thisColumnInput.addEventListener('input', e => {
-                    if (type === 'searchNearest') { 
-                        console.log(1)
+        console.log($table.column(0).data())
+        // const searchNearestIndexes = tableConfig.columnDefs.filter(c => c.searchNearest).map(c => (c.originalColumnDef.targets as [number])[0]);
+        // const filterIndexes = tableConfig.columnDefs.filter(c => c.filter).map(c => (c.originalColumnDef.targets as [number])[0]);
+        // const createInput = (indexes: number[], type: 'searchNearest' | 'filter'): void => {
+            
+        //     const columnDatas = $table.column(columnIndex).data();
+        //     indexes.forEach(columnIndex => {
+        //         const thisColumnInput = document.createElement('input');
+        //         thisColumnInput.type = 'text';
+        //         thisColumnInput.addEventListener('input', e => {
+        //             if (type === 'searchNearest') { 
+        //                 console.log(1)
                         
-                        const columnDatas = $table.column(columnIndex).data();
-                        // const mapedTableDatas = columnDatas.map(function (value) {
-                        //     return Math.abs(value - +(thisColumnInput.value));
-                        // });
-                        // const nearestValue = Math.min.apply(null, mapedTableDatas);
-                        // const rowIndex = mapedTableDatas.indexOf(nearestValue);
+        //                 const columnDatas = $table.column(columnIndex).data();
+        //                 // const mapedTableDatas = columnDatas.map(function (value) {
+        //                 //     return Math.abs(value - +(thisColumnInput.value));
+        //                 // });
+        //                 // const nearestValue = Math.min.apply(null, mapedTableDatas);
+        //                 // const rowIndex = mapedTableDatas.indexOf(nearestValue);
                         
-                        // console.log(rowIndex)
+        //                 // console.log(rowIndex)
 
-                        // $table.row(':eq(' + ((rowIndex - 3 <= 0) ? 0 : rowIndex - 3) + ')').scrollTo();
-                        // console.log(3)
-                        // $table.rows().deselect();
-                        // console.log(4)
-                        // $table.row(':eq(' + rowIndex + ')').select();
-                        // console.log(5)
-                    }
-                    else {
-                        $table.column(columnIndex).search(thisColumnInput.value).draw();
-                    }
-                });
-                thisColumnInput.addEventListener('focus', e => {
-                    document.querySelectorAll<HTMLInputElement>(`table.${config.elementId} thead input`).forEach(input => {
-                        if (input !== thisColumnInput) input.value = '';
-                    });
-                    $table.column(columnIndex).order('asc').draw();
-                    $table.rows().deselect();
-                });
-                document.querySelector(`table.${config.elementId} thead th:nth-of-type(${columnIndex + 1})`).appendChild(thisColumnInput);
-            })
-        }
+        //                 // $table.row(':eq(' + ((rowIndex - 3 <= 0) ? 0 : rowIndex - 3) + ')').scrollTo();
+        //                 // console.log(3)
+        //                 // $table.rows().deselect();
+        //                 // console.log(4)
+        //                 // $table.row(':eq(' + rowIndex + ')').select();
+        //                 // console.log(5)
+        //             }
+        //             else {
+        //                 $table.column(columnIndex).search(thisColumnInput.value).draw();
+        //             }
+        //         });
+        //         thisColumnInput.addEventListener('focus', e => {
+        //             document.querySelectorAll<HTMLInputElement>(`table.${config.elementId} thead input`).forEach(input => {
+        //                 if (input !== thisColumnInput) input.value = '';
+        //             });
+        //             $table.column(columnIndex).order('asc').draw();
+        //             $table.rows().deselect();
+        //         });
+        //         document.querySelector(`table.${config.elementId} thead th:nth-of-type(${columnIndex + 1})`).appendChild(thisColumnInput);
+        //     })
+        // }
 
-        createInput(searchNearestIndexes, 'searchNearest');
-        createInput(filterIndexes, 'filter');
+        // createInput(searchNearestIndexes, 'searchNearest');
+        // createInput(filterIndexes, 'filter');
     }).DataTable({
         ...tableConfig.originalConfig,
         ...{
