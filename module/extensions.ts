@@ -6,7 +6,8 @@ declare global {
     interface String {
         padStart(maxLength: number, fillString: string): string;
         padEnd(maxLength: number, fillString: string): string;   
-        encodeHtml(): string;    
+        encodeHtml(): string;
+        camelCaseToRegularString(): string
     }
     interface Array<T> {
         groupBy(compareWith?: CompareWith<T>): T[][];
@@ -77,6 +78,11 @@ export function setupExtension() {
     String.prototype.encodeHtml = function encodeHtml() {
         const value = this as string;
         return value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    String.prototype.camelCaseToRegularString = function camelCaseToRegularString() {
+        const value = this as string;
+        return value.replace(/([A-Z])/g, ' $1').toLowerCase();
     }
 
     Date.prototype.toDateString = function () {
