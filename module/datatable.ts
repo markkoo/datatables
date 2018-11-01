@@ -30,8 +30,6 @@ export function setupDataTable<T>(config: { elementId: string, config: TableConf
     const tableElement = document.getElementById(config.elementId);
     tableElement.classList.add(config.elementId);
     const $table = $(tableElement).on('init.dt', function () {
-        
-        $table.row(':eq(10)').scrollTo();
         const searchNearestIndexes = tableConfig.columnDefs.filter(c => c.searchNearest).map(c => (c.originalColumnDef.targets as [number])[0]);
         const filterIndexes = tableConfig.columnDefs.filter(c => c.filter).map(c => (c.originalColumnDef.targets as [number])[0]);
         const createInput = (indexes: number[], type: 'searchNearest' | 'filter'): void => {

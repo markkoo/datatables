@@ -34,7 +34,7 @@ setupDataTable<Person>({
                     targets: [0],
                     data:'partNumber',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
-                        return row.partNumber
+                        return data
                     }
                 },                
                 filter: true
@@ -45,7 +45,7 @@ setupDataTable<Person>({
                     targets: [1],
                     data:'intCode',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
-                        return row.intCode
+                        return data
                     }
                 },                
                 filter: true
@@ -56,7 +56,7 @@ setupDataTable<Person>({
                     targets: [2],
                     data:'innerDiameter',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
-                        return row.innerDiameter
+                        return data
                     }
                 },                
                 searchNearest: true
@@ -67,7 +67,7 @@ setupDataTable<Person>({
                     targets: [3],
                     data:'outerDiameter',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
-                        return row.outerDiameter
+                        return data
                     }
                 },                
                 searchNearest: true
@@ -78,7 +78,7 @@ setupDataTable<Person>({
                     targets: [4],
                     data:'height',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
-                        return row.height
+                        return data
                     }
                 },                
                 searchNearest: true
@@ -89,7 +89,7 @@ setupDataTable<Person>({
                     targets: [5],
                     data:'materialInfo',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
-                        return `<a href="${row.materialInfo}">${row.materialInfo}</a>`;
+                        return `<a href="${data}">${data}</a>`;
                     }
                 }               
             },
