@@ -37,7 +37,7 @@ export function setupDataTable<T>(config: { elementId: string, config: TableConf
                 const thisColumnInput = document.createElement('input');
                 thisColumnInput.type = 'text';
                 thisColumnInput.addEventListener('input', e => {
-                    if (type === 'searchNearest') {
+                    if (type === 'searchNearest') { 
                         console.log(1)
                         
                         const columnDatas = $table.column(columnIndex).data();
