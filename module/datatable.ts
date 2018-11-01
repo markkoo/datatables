@@ -39,7 +39,6 @@ export function setupDataTable<T>(config: { elementId: string, config: TableConf
                 thisColumnInput.addEventListener('input', e => {
                     if (type === 'searchNearest') {
                         console.log(1)
-                        [{ }]
                         
                         const columnDatas = $table.column(columnIndex).data();
                         // const mapedTableDatas = columnDatas.map(function (value) {
@@ -89,6 +88,7 @@ export function setupDataTable<T>(config: { elementId: string, config: TableConf
                         });
                         return item;
                     });
+                    console.log((tableConfig.groupBy) ? datasAfterMap.groupBy(tableConfig.groupBy) : datasAfterMap)
                     return (tableConfig.groupBy) ? datasAfterMap.groupBy(tableConfig.groupBy) : datasAfterMap;
                 }
 
