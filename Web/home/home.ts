@@ -32,6 +32,7 @@ setupDataTable<Person>({
                 originalColumnDef: { 
                     title : 'part number',
                     targets: [0],
+                    data:'partNumber',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
                         return row.partNumber
                     }
@@ -42,6 +43,7 @@ setupDataTable<Person>({
                 originalColumnDef: { 
                     title : 'int Code',
                     targets: [1],
+                    data:'intCode',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
                         return row.intCode
                     }
@@ -52,6 +54,7 @@ setupDataTable<Person>({
                 originalColumnDef: { 
                     title : 'inner diameter',
                     targets: [2],
+                    data:'innerDiameter',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
                         return row.innerDiameter
                     }
@@ -62,6 +65,7 @@ setupDataTable<Person>({
                 originalColumnDef: { 
                     title : 'outer diameter',
                     targets: [3],
+                    data:'outerDiameter',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
                         return row.outerDiameter
                     }
@@ -72,6 +76,7 @@ setupDataTable<Person>({
                 originalColumnDef: { 
                     title : 'height',
                     targets: [4],
+                    data:'height',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
                         return row.height
                     }
@@ -82,6 +87,7 @@ setupDataTable<Person>({
                 originalColumnDef: { 
                     title : 'meterail',
                     targets: [5],
+                    data:'materialInfo',
                     render:(data: any, type: any, row: Person, meta: any):any=>{
                         return `<a href="${row.materialInfo}">${row.materialInfo}</a>`;
                     }
